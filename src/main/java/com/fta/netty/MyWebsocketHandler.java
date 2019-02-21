@@ -14,7 +14,7 @@ public class MyWebsocketHandler extends SimpleChannelInboundHandler<Object> {
 
     private WebSocketServerHandshaker webSocketServerHandshaker;
 
-    private static final String WEBSOCKET_URL = "ws://localhost:8888/websocket";
+    private static final String WEBSOCKET_URL = "wss://localhost:8889/websocket";
 //    private TestTimer testTimer;
 
     /**
@@ -26,10 +26,13 @@ public class MyWebsocketHandler extends SimpleChannelInboundHandler<Object> {
      */
     @Override
     protected void messageReceived(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
+//        Main.logInfo("messageReceived  处理握手请求的业务");
         //处理握手请求的业务
         if (msg instanceof FullHttpMessage) {
+//            Main.logInfo("messageReceived FullHttpMessage");
             handHttpRequest(channelHandlerContext, (FullHttpRequest) msg);
         } else if (msg instanceof WebSocketFrame) {//处理websocket连接业务
+//            Main.logInfo("messageReceived WebSocketFrame");
             handleWebsocketFrame(channelHandlerContext, (WebSocketFrame) msg);
         }
 
@@ -54,7 +57,7 @@ public class MyWebsocketHandler extends SimpleChannelInboundHandler<Object> {
         //返回应答消息
         String requestMsg = ((TextWebSocketFrame) frame).text();
 //        System.out.println(LogUtils.printMsg("服务端收到客户端的消息：" + requestMsg));
-        Main.logInfo("服务端收到客户端的消息：" + requestMsg);
+        Main.logInfo("服务端" + ctx.channel().id().asShortText() + "管道收到客户端的消息：" + requestMsg);
 //        TextWebSocketFrame textWebSocketFrame = new TextWebSocketFrame(new Date().toString() + ctx.channel().id() + "===>>>" + requestMsg);
 //        //发送给客户端，想每一个客户都发
 //        NettyConfig.channelGroup.writeAndFlush(textWebSocketFrame);
@@ -121,13 +124,6 @@ public class MyWebsocketHandler extends SimpleChannelInboundHandler<Object> {
         boolean add = NettyConfig.channelGroup.add(ctx.channel());
 //        System.out.println(LogUtils.printMsg("客户端与服务端连接开启：" + add + "=连接的ID=" + ctx.channel().id().asLongText()));
         Main.logInfo("客户端与服务端连接开启：" + add + "=连接的ID=" + ctx.channel().id().asLongText());
-//        if (add) {
-//            if (testTimer != null) {
-//                testTimer.cancel();
-//            }
-//            testTimer = new TestTimer(30,ctx.channel());
-//        }
-//        super.channelActive(ctx);
     }
 
     /**
@@ -139,14 +135,8 @@ public class MyWebsocketHandler extends SimpleChannelInboundHandler<Object> {
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 //        System.out.println(LogUtils.printMsg("客户端与服务端连接关闭:ID=" + ctx.channel().id().asLongText()));
-        Main.logInfo("客户端与服务端连接关闭:ID=" + ctx.channel().id().asLongText());
         boolean remove = NettyConfig.channelGroup.remove(ctx.channel());
-//        System.out.println(LogUtils.printMsg("客户端与服务端连接关闭：" + remove));
-        Main.logInfo("客户端与服务端连接关闭：" + remove);
-//        super.channelInactive(ctx);
-//        if (testTimer != null) {
-//            testTimer.cancel();
-//        }
+        Main.logInfo("客户端与服务端连接关闭:" + remove + "ID=" + ctx.channel().id().asLongText());
     }
 
     /**

@@ -27,7 +27,7 @@ public class Main {
 //            serverBootstrap.childOption(ChannelOption.SO_TIMEOUT, 30000);
 //            System.out.println("服务端开启等待连接");
             logger.info("服务端开启等待连接");
-            Channel ch = serverBootstrap.bind(8888).sync().channel();
+            Channel ch = serverBootstrap.bind(8889).sync().channel();
             ch.closeFuture().sync();
 
         } catch (Exception e) {

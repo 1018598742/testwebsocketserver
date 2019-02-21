@@ -34,7 +34,7 @@ public class MyHandler extends ChannelHandlerAdapter {
             } else if (event.state().equals(IdleState.ALL_IDLE)) {
                 //未进行读写
 //                System.out.println(LogUtils.printMsg("ALL_IDLE"));
-                Main.logInfo("ALL_IDLE " + channelId);
+//                Main.logInfo("ALL_IDLE " + channelId);
 
                 // 发送心跳消息
                 Date date = new Date();
