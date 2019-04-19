@@ -11,10 +11,12 @@
 		if(window.WebSocket){
 			// socket = new WebSocket("wss://192.168.0.129:8888/");
 			// socket = new WebSocket("wss://192.168.0.115:8889/websocket");
-			socket = new WebSocket("wss://192.168.0.115:8889/websocket");
+			socket = new WebSocket("ws://localhost:8889/websocket");
+			// socket = new WebSocket("wss://192.168.0.5:8899/websocket/socectsocket");
 			socket.onmessage = function(event){
 				var ta = document.getElementById('responseContent');
 				ta.value += event.data + "\r\n";
+				send("i am web!")
 			};
 
 			socket.onopen = function(event){

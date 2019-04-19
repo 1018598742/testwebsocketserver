@@ -1,4 +1,4 @@
-package com.fta.netty;
+package com.fta.netty.websocketserver;
 
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;

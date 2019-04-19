@@ -1,11 +1,13 @@
-package com.fta.netty;
+package com.fta.netty.websocketserver;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.apache.log4j.Logger;
 
 /**
@@ -15,6 +17,10 @@ public class Main {
     static Logger logger = Logger.getLogger(Main.class);
 
     public static void main(String[] args) {
+        new Main().start();
+    }
+
+    public void start() {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workGroup = new NioEventLoopGroup();
         try {
@@ -28,6 +34,7 @@ public class Main {
 //            System.out.println("服务端开启等待连接");
             logger.info("服务端开启等待连接");
             Channel ch = serverBootstrap.bind(8889).sync().channel();
+//            Channel ch = serverBootstrap.bind(8899).sync().channel();
             ch.closeFuture().sync();
 
         } catch (Exception e) {
@@ -35,6 +42,15 @@ public class Main {
         } finally {
             bossGroup.shutdownGracefully();
             workGroup.shutdownGracefully();
+        }
+    }
+
+    public static void pushMessage() {
+        ChannelGroup channelGroup = NettyConfig.channelGroup;
+        logInfo("channelGroup size is " + channelGroup.size());
+        if (channelGroup.size() > 0) {
+            TextWebSocketFrame textWebSocketFrame = new TextWebSocketFrame("I am server,I am sending Message");
+            channelGroup.writeAndFlush(textWebSocketFrame);
         }
     }
 

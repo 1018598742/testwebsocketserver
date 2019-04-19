@@ -1,4 +1,4 @@
-package com.fta.netty;
+package com.fta.netty.websocketserver;
 
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
@@ -8,7 +8,6 @@ import io.netty.handler.timeout.IdleStateEvent;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Logger;
 
 public class MyHandler extends ChannelHandlerAdapter {
 

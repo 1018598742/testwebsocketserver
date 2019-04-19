@@ -1,4 +1,4 @@
-package com.fta.netty;
+package com.fta.netty.websocketserver;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;

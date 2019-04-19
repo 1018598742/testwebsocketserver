@@ -1,11 +1,9 @@
-package com.fta.netty;
+package com.fta.netty.websocketserver;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.*;
+import io.netty.channel.group.ChannelGroup;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.websocketx.*;
 import io.netty.util.CharsetUtil;
@@ -14,7 +12,9 @@ public class MyWebsocketHandler extends SimpleChannelInboundHandler<Object> {
 
     private WebSocketServerHandshaker webSocketServerHandshaker;
 
-    private static final String WEBSOCKET_URL = "wss://localhost:8889/websocket";
+    //    private static final String WEBSOCKET_URL = "wss://localhost:8899/websocket";
+//    private static final String WEBSOCKET_URL = "wss://localhost:8889/websocket";
+    private static final String WEBSOCKET_URL = "ws://localhost:8889/websocket";
 //    private TestTimer testTimer;
 
     /**
@@ -58,6 +58,12 @@ public class MyWebsocketHandler extends SimpleChannelInboundHandler<Object> {
         String requestMsg = ((TextWebSocketFrame) frame).text();
 //        System.out.println(LogUtils.printMsg("服务端收到客户端的消息：" + requestMsg));
         Main.logInfo("服务端" + ctx.channel().id().asShortText() + "管道收到客户端的消息：" + requestMsg);
+        if ("1111111111".equals(requestMsg)) {
+            ChannelGroup channelGroup = NettyConfig.channelGroup;
+            channelGroup.remove(ctx.channel());
+            TextWebSocketFrame textWebSocketFrame = new TextWebSocketFrame(requestMsg);
+            channelGroup.writeAndFlush(textWebSocketFrame);
+        }
 //        TextWebSocketFrame textWebSocketFrame = new TextWebSocketFrame(new Date().toString() + ctx.channel().id() + "===>>>" + requestMsg);
 //        //发送给客户端，想每一个客户都发
 //        NettyConfig.channelGroup.writeAndFlush(textWebSocketFrame);

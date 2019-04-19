@@ -1,7 +1,7 @@
 package com.fta.netty;
 
+import com.fta.netty.websocketserver.NettyConfig;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelId;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 
 import java.text.SimpleDateFormat;
